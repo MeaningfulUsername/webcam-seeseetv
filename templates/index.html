@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>SeeSeeTV</title>
+    </head>
+    <body>
+        <h1>Live Video</h1>
+        <img height="200" src="/video_feed" />
+        
+        <h1>Last Capture</h1>
+        <img id="lastImage" src="/last_image" height="200" />
+
+        <button type="button" onclick="captureImage()">Capture</button>
+
+        <script>
+            function captureImage() {
+                fetch("/capture", {
+                    method: "POST"
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.image) {
+                        document.getElementById("lastImage").src = "/last_image?ts=" + Date.now();
+                    }
+                })
+                .catch(error => {
+                    console.error("Error capturing image:", error);
+                });
+            }
+        </script>
+    </body>
+</html>
